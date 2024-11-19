@@ -1,4 +1,3 @@
-Here's an enhanced and corrected **README** file based on your setup and recent updates:
 
 ```markdown
 # Grocery Store Management System
@@ -149,4 +148,3 @@ Happy managing!
 - **Error handling tips**: Covers common issues like missing database tables or email errors.
 - **Usage examples**: Walkthrough for running the application and using its features.
 
-Let me know if you need further tweaks!
