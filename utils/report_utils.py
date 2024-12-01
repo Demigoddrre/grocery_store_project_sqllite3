@@ -1,3 +1,4 @@
+import os
 import csv
 import sqlite3
 import pandas as pd
@@ -8,11 +9,12 @@ def generate_report(report_type, time_period, output_path=None):
     """
     Generates a CSV report based on the report type and time period.
 
-    :param report_type: The type of report to generate (e.g., 'earnings', 'spending').
+    :param report_type: The type of report to generate (e.g., 'earnings', 'spending', 'product_performance', 'least_selling').
     :param time_period: The time period for the report (e.g., 'monthly', 'quarterly', 'annually').
     :param output_path: Optional, the path where the report CSV file should be saved.
     """
     conn = connect_to_db()
+
     cursor = conn.cursor()
 
     try:
@@ -33,6 +35,28 @@ def generate_report(report_type, time_period, output_path=None):
                 FROM OrderDetails od
                 JOIN Products p ON od.ProductID = p.ProductID
                 GROUP BY p.Category
+            """
+        elif report_type == "product_performance":
+            query = """
+                SELECT 
+                    p.ProductName AS ProductName,
+                    SUM(od.Quantity) AS TotalSold,
+                    SUM(od.Price * od.Quantity) AS TotalRevenue
+                FROM OrderDetails od
+                JOIN Products p ON od.ProductID = p.ProductID
+                GROUP BY p.ProductID
+                ORDER BY TotalSold DESC
+            """
+        elif report_type == "least_selling":
+            query = """
+                SELECT 
+                    p.ProductName AS ProductName,
+                    SUM(od.Quantity) AS TotalSold
+                FROM OrderDetails od
+                JOIN Products p ON od.ProductID = p.ProductID
+                GROUP BY p.ProductID
+                HAVING TotalSold > 0
+                ORDER BY TotalSold ASC
             """
         else:
             print("Invalid report type.")
@@ -58,6 +82,7 @@ def generate_report(report_type, time_period, output_path=None):
     finally:
         cursor.close()
         conn.close()
+
 
 def view_graphs(graph_type, time_period, output_path):
     """
