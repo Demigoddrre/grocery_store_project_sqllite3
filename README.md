@@ -1,5 +1,6 @@
 
-```markdown
+---
+
 # Grocery Store Management System
 
 A Python-based console application designed for grocery store operations, allowing users to generate reports, view visualizations, and manage data efficiently.
@@ -7,9 +8,9 @@ A Python-based console application designed for grocery store operations, allowi
 ---
 
 ## Features
-- **Generate Reports**: Earnings and product performance reports saved as CSV files.
-- **Data Visualizations**: Spending and product performance graphs saved as PNG images.
-- **Email Integration**: Send reports via email using SendGrid.
+- **Generate Reports**: Earnings and spending reports saved as CSV files.
+- **Data Visualizations**: Spending and earnings graphs saved as PNG images.
+- **Email Integration**: (Planned) Send reports via email using SendGrid.
 - **Database Operations**: Execute inventory updates and calculate loyalty points.
 
 ---
@@ -20,7 +21,7 @@ A Python-based console application designed for grocery store operations, allowi
 Ensure the following are installed:
 - **Python 3.x** and **pip**
 - **SQLite 3** (default with Python installation)
-- Internet connection (for SendGrid API)
+- Internet connection (for future SendGrid API integration)
 
 ### Installation Steps
 
@@ -49,13 +50,6 @@ Add sample data to the database for testing:
 python3 database/populate_test_data.py
 ```
 
-#### 5. Configure Email Sending
-Create a `.env` file in the root directory and add your SendGrid credentials:
-```env
-SENDGRID_API_KEY=your_sendgrid_api_key
-SENDER_EMAIL=your_verified_email
-```
-
 ---
 
 ## Project Structure
@@ -67,11 +61,12 @@ grocery_store_project/
 │   ├── config.py                   # Database connection logic
 │   ├── create_tables.py            # Schema creation script
 │   ├── populate_test_data.py       # Test data population script
-├── email/
-│   ├── send_email.py               # SendGrid email integration
 ├── reports/
 │   ├── csv/                        # Directory for CSV reports
+│   │   ├── earnings_monthly.csv    # Example: Monthly earnings report
+│   │   ├── spending_monthly.csv    # Example: Monthly spending report
 │   ├── graphs/                     # Directory for graph images
+│       ├── spending_monthly.png    # Example: Monthly spending graph
 ├── utils/
 │   ├── db_utils.py                 # Utility functions for database operations
 │   ├── report_utils.py             # Reporting and visualization utilities
@@ -92,23 +87,39 @@ python3 main.py
 ```
 
 ### Available Menu Options
-1. **Generate Reports**: Create CSV files for earnings or product performance.
-2. **View Graphs**: Generate visualizations for spending or product performance.
-3. **Send Reports via Email**: Email reports using the SendGrid integration.
+1. **Generate Reports**: Create CSV files for earnings or spending reports.
+2. **View Graphs**: Generate visualizations for earnings or spending data.
+3. **Send Reports via Email**: (Planned) Email reports using SendGrid integration.
 4. **Execute Operations**: Manage inventory, loyalty points, and other operations.
 5. **Exit**: Close the application.
 
 ### Example Workflow
 1. Run the application: `python3 main.py`.
-2. Select **1. Generate Report** and specify the type and time period.
+2. Select **1. Generate Report** and specify the type (`earnings`, `spending`) and time period.
 3. Select **2. View Graphs** to generate a visualization.
-4. Select **3. Send Reports via Email** to email reports.
+4. Save generated graphs as `.png` files and optionally display them interactively.
 
 ---
 
 ## Troubleshooting
 
-### Database Issues
+### Known Issues
+1. **Graph Generation Errors**:
+   - Inconsistent behavior where graphs are not displayed interactively or saved correctly as `.png` files.
+   - Occasionally throws errors such as "CSV file not found" despite the file existing.
+
+2. **Unclear Input Options**:
+   - Users are not clearly informed about valid report or graph types (e.g., `earnings`, `spending`).
+
+3. **Incomplete Features**:
+   - Email functionality is not yet implemented.
+   - No validation for invalid user input, which could cause unexpected errors.
+
+---
+
+### General Debugging Tips
+
+#### Database Issues
 - Ensure `create_tables.py` has been run to create necessary tables.
 - Check the database path in `database/config.py`:
   ```python
@@ -116,11 +127,7 @@ python3 main.py
       return sqlite3.connect("database/grocery_store.db")
   ```
 
-### Email Sending Errors
-- Confirm `.env` contains a valid `SENDGRID_API_KEY` and `SENDER_EMAIL`.
-- Ensure the SendGrid API key is active.
-
-### Graph or Report Errors
+#### Graph or Report Errors
 - Confirm data exists in the database tables using SQLite CLI:
   ```bash
   sqlite3 database/grocery_store.db
@@ -129,22 +136,58 @@ python3 main.py
 
 ---
 
+## Recent Updates
+1. **Dynamic Report Naming**:
+   - Reports are now named dynamically based on the report type and time period (e.g., `earnings_monthly.csv`, `spending_quarterly.csv`).
+
+2. **Error Handling**:
+   - Improved error handling for missing files, empty datasets, and unsupported input.
+
+3. **Graph Functionality**:
+   - Added an option to save graphs as `.png` files and display them interactively.
+
+---
+
 ## Future Enhancements
-- Add a web interface for improved usability.
-- Expand reporting options with detailed filtering.
-- Integrate with cloud services for report storage.
+1. **Email Integration**:
+   - Implement functionality to email reports or graphs to users.
+
+2. **Additional Report Types**:
+   - Add new reports for best-selling products, low-stock alerts, and customer trends.
+
+3. **Input Validation**:
+   - Validate user input in the menu to prevent unsupported or invalid options.
+
+4. **Automated Testing**:
+   - Add unit tests for report generation and graphing functionality.
+
+5. **Database Migration**:
+   - Explore transitioning to a scalable database like PostgreSQL for production use.
+
+---
+
+## To-Do List
+
+### Immediate Fixes
+1. Debug the graph generation process to ensure:
+   - Files save correctly.
+   - Graphs display interactively as intended.
+
+2. Improve user feedback in the menu:
+   - Clearly list valid options for report and graph types.
+
+3. Add basic validation for user input.
+
+### Next Steps
+1. Implement the email feature using SendGrid.
+2. Enhance reporting functionality with additional report types.
+3. Introduce automated testing for critical functions.
 
 ---
 
 ## Author
 Developed by D'Andre D.
 
-Happy managing!
-```
+Happy managing! 🚀
 
-### Key Updates:
-- **Detailed structure**: Includes all updated files and their purposes.
-- **Test data setup**: Instructions for populating the database with sample data.
-- **Error handling tips**: Covers common issues like missing database tables or email errors.
-- **Usage examples**: Walkthrough for running the application and using its features.
-
+---
