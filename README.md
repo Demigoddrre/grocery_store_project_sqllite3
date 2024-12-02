@@ -1,5 +1,4 @@
 
-```markdown
 # Grocery Store Management System
 
 A Python-based console application designed for grocery store operations, allowing users to generate reports, view visualizations, and manage data efficiently.
