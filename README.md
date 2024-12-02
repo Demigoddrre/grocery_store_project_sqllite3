@@ -188,6 +188,3 @@ python3 main.py
 Developed by D'Andre D.
 
 Happy managing! 🚀
-
----
-```
